@@ -1,4 +1,4 @@
-# play-ovp-dynamodb-csv-importer
+# dynamodb-csv-importer
 Simple set of scripts to import data into DynamoDB
 
 Call using:
