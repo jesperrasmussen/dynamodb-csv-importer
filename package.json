@@ -5,6 +5,7 @@
     "license": "MIT",
     "dependencies": {
         "aws-sdk": "^2.560.0",
-        "csv-parse": ">=4.4.6"
+        "csv-parse": ">=4.4.6",
+        "papaparse": "^5.1.0"
     }
 }
