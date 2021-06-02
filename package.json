@@ -4,8 +4,10 @@
     "main": "index.js",
     "license": "MIT",
     "dependencies": {
-        "aws-sdk": "^2.560.0",
+        "@aws-sdk/credential-provider-sso": "^3.17.0",
+        "@aws-sdk/client-dynamodb": "^3.17.0",
+        "@aws-sdk/lib-dynamodb": "^3.17.0",
         "csv-parse": ">=4.4.6",
-        "papaparse": "^5.1.0"
+        "papaparse": ">=5.2.0"
     }
 }

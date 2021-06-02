@@ -1,16 +1,18 @@
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBDocument } = require("@aws-sdk/lib-dynamodb");
 const fs = require('fs')
-const AWS = require('aws-sdk')
 const Papa = require('papaparse')
+const { fromSSO } = require('@aws-sdk/credential-provider-sso')
 
 var args = process.argv.slice(2);
-var credentials = new AWS.SharedIniFileCredentials({ profile: `${args[0]}` });
+var credentials = fromSSO({ profile: `${args[0]}` });
 
-AWS.config.credentials = credentials;
+const client = new DynamoDBClient({ credentials });
+const ddbDocClient = DynamoDBDocument.from(client);
 
-const docClient = new AWS.DynamoDB.DocumentClient()
 const contents = fs.readFileSync(`${args[2]}`, 'utf-8')
 // If you made an export of a DynamoDB table you need to remove (S) etc from header
-const data = Papa.parse(contents, { header: true, dynamicTyping: true }).data;
+const data = Papa.parse(contents, { header: true, dynamicTyping: false }).data;
 
 data.forEach((item) => {
     if (!item.maybeempty) delete item.maybeempty //need to remove empty items
@@ -23,7 +25,10 @@ data.forEach((item) => {
         }
     }
 
-    docClient.put({ TableName: `${args[1]}`, Item: item }, (err, res) => {
+    ddbDocClient.put({
+        TableName: `${args[1]}`,
+        Item: item
+    }, (err, res) => {
         if (err) console.log(err)
-    })
+    });
 })
